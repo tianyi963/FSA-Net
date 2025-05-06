@@ -550,14 +550,6 @@ class BasicLayer(nn.Module):
                                  drop_path=drop_path[i] if isinstance(drop_path, list) else drop_path,
                                  norm_layer=norm_layer)
             for i in range(depth)])
-        # # self.ts = TSConformerBlock(num_channel=dim, num_heads=num_heads)
-        # self.GSC = GSC(in_channles=dim)
-        # self.HiLo = HiLo(dim=dim)
-        # self.AA = AgentAttention(dim=dim, num_patches=input_resolution[0]*input_resolution[1])
-        # self.HPA = HPA(dim)
-        # self.FF = FeatureFusion(dim=dim, reduction=1, sr_ratio=4, num_heads=num_heads)
-        # self.FEM = FEM(in_planes=dim, out_planes=dim, stride=1, scale=0.1, map_reduce=8)
-        # self.HPA = HPA(channels=dim)
 
         # patch merging layer
         if downsample is not None:
@@ -572,14 +564,6 @@ class BasicLayer(nn.Module):
             else:
                 x = blk(x)
         if self.downsample is not None:
-            # B, L, C = x.shape
-            # H, W = self.input_resolution
-            # x = x.view(B, H, W, C).permute(0, 3, 1, 2)
-            # res = x
-            # x = self.HPA(x)
-            # x = res + x
-            # x = x.permute(0, 2, 3, 1).reshape(B, -1, C)
-
             x = self.downsample(x)
         return x
 
@@ -636,7 +620,6 @@ class BasicLayer_up(nn.Module):
                                  drop_path=drop_path[i] if isinstance(drop_path, list) else drop_path,
                                  norm_layer=norm_layer)
             for i in range(depth)])
-        # self.HPA = HPA(channels=dim)
 
         # patch merging layer
         if upsample is not None:
@@ -651,14 +634,6 @@ class BasicLayer_up(nn.Module):
             else:
                 x = blk(x)
         if self.upsample is not None:
-            # B, L, C = x.shape
-            # H, W = self.input_resolution
-            # x = x.view(B, H, W, C).permute(0, 3, 1, 2)
-            # res = x
-            # x = self.HPA(x)
-            # x = res + x
-            # x = x.permute(0, 2, 3, 1).reshape(B, -1, C)
-
             x = self.upsample(x)
         return x
 
@@ -850,7 +825,6 @@ class SwinTransformerSys(nn.Module):
         num_patches = self.patch_embed.num_patches
         patches_resolution = self.patch_embed.patches_resolution
         self.patches_resolution = patches_resolution
-        # self.LSK = LSKblock(3)
 
         # absolute position embedding
         if self.ape:
